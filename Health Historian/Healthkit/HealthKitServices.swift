@@ -20,6 +20,8 @@ final class HealthKitService {
 
     private init() { }
 
+    // MARK: - Authorization
+
     func requestAuthorization() async {
 
         guard HKHealthStore.isHealthDataAvailable() else {
@@ -42,8 +44,46 @@ final class HealthKitService {
         } catch {
 
             print("HealthKit authorization failed: \(error)")
-
             isAuthorized = false
+
+        }
+
+    }
+
+    // MARK: - Workouts
+
+    func recentWorkouts(limit: Int = 25) async throws -> [HKWorkout] {
+
+        let workoutType = HKObjectType.workoutType()
+
+        let sortDescriptor = NSSortDescriptor(
+            key: HKSampleSortIdentifierStartDate,
+            ascending: false
+        )
+
+        return try await withCheckedThrowingContinuation { continuation in
+
+            let query = HKSampleQuery(
+                sampleType: workoutType,
+                predicate: nil,
+                limit: limit,
+                sortDescriptors: [sortDescriptor]
+            ) { _, samples, error in
+
+                if let error {
+
+                    continuation.resume(throwing: error)
+                    return
+
+                }
+
+                let workouts = samples as? [HKWorkout] ?? []
+
+                continuation.resume(returning: workouts)
+
+            }
+
+            self.healthStore.execute(query)
 
         }
 
