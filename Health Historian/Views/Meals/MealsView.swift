@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MealsView: View {
 
-    @State private var mealStore = MealStore()
+    let mealStore: MealStore
 
     @State private var showingAddMeal = false
 
@@ -49,3 +49,8 @@ struct MealsView: View {
 
 }
 
+#Preview {
+    MealsView(
+        mealStore: MealStore()
+    )
+}

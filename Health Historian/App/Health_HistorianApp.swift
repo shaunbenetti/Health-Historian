@@ -11,17 +11,23 @@ import SwiftData
 @main
 struct Health_HistorianApp: App {
 
+    @State
+    private var mealStore = MealStore()
+
     var body: some Scene {
 
         WindowGroup {
 
-            MainTabView()
+            MainTabView(
+                mealStore: mealStore
+            )
 
         }
         .modelContainer(for: [
             Meal.self,
             MealItem.self
         ])
+
     }
 
 }

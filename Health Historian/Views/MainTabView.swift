@@ -14,6 +14,8 @@ import SwiftUI
 ///
 struct MainTabView: View {
 
+    let mealStore: MealStore
+
     var body: some View {
 
         TabView {
@@ -24,7 +26,7 @@ struct MainTabView: View {
                           systemImage: "house.fill")
                 }
 
-            MealsView()
+            MealsView(mealStore: mealStore)
                 .tabItem {
                     Label("Meals",
                           systemImage: "fork.knife")
@@ -55,5 +57,7 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView()
+    MainTabView(
+        mealStore: MealStore()
+    )
 }

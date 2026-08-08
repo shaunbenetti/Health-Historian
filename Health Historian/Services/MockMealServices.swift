@@ -1,5 +1,5 @@
 //
-//  MockMealService.swift
+//  MockMealServices.swift
 //  Health Historian
 //
 //  Created by Shaun Benetti on 8/8/26.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MockMealService: MealService {
+final class MockMealService {
 
     func loadMeals() -> [Meal] {
 
@@ -15,27 +15,23 @@ final class MockMealService: MealService {
 
             Meal(
                 category: .breakfast,
-                timestamp: Date(),
+                timestamp: .now.addingTimeInterval(-3600 * 4),
                 items: [
-
                     MealItem(name: "Eggs"),
                     MealItem(name: "Coffee"),
                     MealItem(name: "Butter")
-
                 ],
-                notes: "Pre-CrossFit"
+                notes: ""
             ),
 
             Meal(
                 category: .dinner,
-                timestamp: Date(),
+                timestamp: .now.addingTimeInterval(-3600 * 10),
                 items: [
-
-                    MealItem(name: "Ribeye Steak"),
+                    MealItem(name: "Ribeye"),
                     MealItem(name: "Butter")
-
                 ],
-                notes: "Post workout"
+                notes: ""
             )
 
         ]
