@@ -20,20 +20,23 @@ struct DashboardCard: View {
 
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundColor(color)
+                .foregroundStyle(color)
 
             Text(title)
-                .font(.headline)
+                .font(AppFonts.cardTitle)
+                .foregroundStyle(AppColors.textPrimary)
 
             Text(value)
-                .font(.title2)
-                .bold()
+                .font(AppFonts.cardValue)
+                .foregroundStyle(AppColors.textPrimary)
 
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(16)
+
+        .background(AppColors.cardBackground)
+
+        .clipShape(RoundedRectangle(cornerRadius: 18))
 
     }
 
@@ -45,7 +48,7 @@ struct DashboardCard: View {
         title: "Glucose",
         value: "96 mg/dL",
         icon: "drop.fill",
-        color: .red
+        color: AppColors.glucose
     )
 
 }
