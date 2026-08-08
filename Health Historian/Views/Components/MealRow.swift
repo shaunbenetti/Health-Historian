@@ -54,11 +54,10 @@ private extension MealRow {
 
     var foodSummary: String {
 
-        if meal.items.count == 1 {
-            return "1 MealItem"
-        }
-
-        return "\(meal.items.count) items"
+        meal.items
+            .prefix(3)
+            .map(\.name)
+            .joined(separator: " • ")
 
     }
 

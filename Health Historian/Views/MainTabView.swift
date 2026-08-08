@@ -38,7 +38,7 @@ struct MainTabView: View {
                           systemImage: "chart.xyaxis.line")
                 }
 
-            HistoryView()
+            HistoryView(mealStore: mealStore)
                 .tabItem {
                     Label("History",
                           systemImage: "calendar")

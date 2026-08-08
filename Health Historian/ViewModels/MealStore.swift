@@ -46,9 +46,37 @@ final class MealStore {
 
     }
 
-    func delete(_ meal: Meal) {
+    func delete(_ meal: Meal, from modelContext: ModelContext) {
 
-        meals.removeAll { $0 == meal }
+        modelContext.delete(meal)
+
+        do {
+
+            try modelContext.save()
+
+            meals.removeAll { $0 == meal }
+
+        } catch {
+
+            print("Failed to delete meal: \(error)")
+
+        }
+
+    }
+
+    // MARK: - History
+
+    var mealsByDay: [(date: Date, meals: [Meal])] {
+
+        let calendar = Calendar.current
+
+        let grouped = Dictionary(grouping: meals) { meal in
+            calendar.startOfDay(for: meal.timestamp)
+        }
+
+        return grouped
+            .map { (date: $0.key, meals: $0.value) }
+            .sorted { $0.date > $1.date }
 
     }
 

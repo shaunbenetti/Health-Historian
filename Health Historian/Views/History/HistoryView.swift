@@ -6,18 +6,56 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HistoryView: View {
+
+    let mealStore: MealStore
+
+    @Environment(\.modelContext)
+    private var modelContext
+
+    @State private var hasLoaded = false
 
     var body: some View {
 
         NavigationStack {
 
-            ContentUnavailableView(
-                "History",
-                systemImage: "calendar",
-                description: Text("Historical data will appear here.")
-            )
+            List {
+
+                ForEach(mealStore.mealsByDay, id: \.date) { day in
+
+                    Section(sectionTitle(for: day.date)) {
+
+                        ForEach(day.meals) { meal in
+
+                            NavigationLink {
+
+                                MealDetailView(meal: meal)
+
+                            } label: {
+
+                                MealRow(meal: meal)
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+            .navigationTitle("History")
+            .onAppear {
+
+                guard !hasLoaded else { return }
+
+                mealStore.load(from: modelContext)
+
+                hasLoaded = true
+
+            }
 
         }
 
@@ -25,6 +63,32 @@ struct HistoryView: View {
 
 }
 
+// MARK: - Helpers
+
+private extension HistoryView {
+
+    func sectionTitle(for date: Date) -> String {
+
+        let calendar = Calendar.current
+
+        if calendar.isDateInToday(date) {
+            return "Today"
+        }
+
+        if calendar.isDateInYesterday(date) {
+            return "Yesterday"
+        }
+
+        return date.formatted(.dateTime.month().day().year())
+
+    }
+
+}
+
 #Preview {
-    HistoryView()
+
+    HistoryView(
+        mealStore: MealStore()
+    )
+
 }

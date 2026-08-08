@@ -23,10 +23,33 @@ struct MealsView: View {
 
         NavigationStack {
             
-            List(mealStore.meals) { meal in
-                
-                MealRow(meal: meal)
-                
+            List {
+
+                ForEach(mealStore.meals) { meal in
+
+                    NavigationLink {
+
+                        MealDetailView(meal: meal)
+
+                    } label: {
+
+                        MealRow(meal: meal)
+
+                    }
+
+                }
+                .onDelete { indexSet in
+
+                    for index in indexSet {
+
+                        let meal = mealStore.meals[index]
+
+                        mealStore.delete(meal, from: modelContext)
+
+                    }
+
+                }
+
             }
             .navigationTitle("Meals")
             
