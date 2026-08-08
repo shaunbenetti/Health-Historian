@@ -15,7 +15,8 @@ struct HistoryView: View {
     @Environment(\.modelContext)
     private var modelContext
 
-    @State private var hasLoaded = false
+    @State
+    private var hasLoaded = false
 
     var body: some View {
 
@@ -47,6 +48,23 @@ struct HistoryView: View {
 
             }
             .navigationTitle("History")
+            .toolbar {
+
+                if !HealthKitService.shared.isAuthorized {
+
+                    Button("Connect") {
+
+                        Task {
+
+                            await HealthKitService.shared.requestAuthorization()
+
+                        }
+
+                    }
+
+                }
+
+            }
             .onAppear {
 
                 guard !hasLoaded else { return }
@@ -61,13 +79,9 @@ struct HistoryView: View {
 
     }
 
-}
+    // MARK: - Helpers
 
-// MARK: - Helpers
-
-private extension HistoryView {
-
-    func sectionTitle(for date: Date) -> String {
+    private func sectionTitle(for date: Date) -> String {
 
         let calendar = Calendar.current
 
