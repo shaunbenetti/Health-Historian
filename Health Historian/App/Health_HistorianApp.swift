@@ -18,8 +18,10 @@ struct Health_HistorianApp: App {
             MainTabView()
 
         }
-        
-
+        .modelContainer(for: [
+            Meal.self,
+            MealItem.self
+        ])
     }
 
 }
