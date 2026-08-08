@@ -2,22 +2,19 @@
 //  MealItem.swift
 //  Health Historian
 //
-//  Created by Shaun Benetti on 8/8/26.
-//
 
 import Foundation
+import SwiftData
 
-///
-/// Represents a single food within a meal.
-///
-struct MealItem: Identifiable {
-
-    let id = UUID()
+@Model
+final class MealItem {
 
     var name: String
 
-    var quantity: Double?
+    init(name: String) {
 
-    var unit: String?
+        self.name = name
+
+    }
 
 }

@@ -43,6 +43,13 @@ struct MealRow: View {
     }
 
 }
+extension Meal {
+
+    var displayTitle: String {
+        category.title
+    }
+
+}
 private extension MealRow {
 
     var foodSummary: String {

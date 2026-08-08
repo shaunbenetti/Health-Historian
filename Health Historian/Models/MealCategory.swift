@@ -10,7 +10,7 @@ import Foundation
 ///
 /// Categories used to group meals.
 ///
-enum MealCategory: String, CaseIterable, Identifiable {
+enum MealCategory: String, CaseIterable, Identifiable, Codable {
 
     case breakfast
     case lunch

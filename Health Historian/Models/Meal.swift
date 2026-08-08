@@ -2,17 +2,12 @@
 //  Meal.swift
 //  Health Historian
 //
-//  Created by Shaun Benetti on 8/8/26.
-//
 
 import Foundation
+import SwiftData
 
-///
-/// Represents a meal consisting of one or more foods.
-///
-struct Meal: Identifiable {
-
-    let id = UUID()
+@Model
+final class Meal {
 
     var category: MealCategory
 
@@ -22,12 +17,17 @@ struct Meal: Identifiable {
 
     var notes: String
 
-}
-extension Meal {
+    init(
+        category: MealCategory,
+        timestamp: Date,
+        items: [MealItem],
+        notes: String
+    ) {
 
-    var displayTitle: String {
-
-        category.title
+        self.category = category
+        self.timestamp = timestamp
+        self.items = items
+        self.notes = notes
 
     }
 
