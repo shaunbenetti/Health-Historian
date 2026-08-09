@@ -55,9 +55,7 @@ struct HistoryView: View {
                     Button("Connect") {
 
                         Task {
-
                             await HealthKitService.shared.requestAuthorization()
-
                         }
 
                     }
@@ -72,6 +70,8 @@ struct HistoryView: View {
                 mealStore.load(from: modelContext)
 
                 hasLoaded = true
+
+                }
 
             }
 
@@ -96,8 +96,6 @@ struct HistoryView: View {
         return date.formatted(.dateTime.month().day().year())
 
     }
-
-}
 
 #Preview {
 

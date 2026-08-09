@@ -52,7 +52,7 @@ final class HealthKitService {
 
     // MARK: - Workouts
 
-    func recentWorkouts(limit: Int = 25) async throws -> [HKWorkout] {
+    func recentWorkouts(limit: Int = 25) async throws -> [WorkoutEvent] {
 
         let workoutType = HKObjectType.workoutType()
 
@@ -69,18 +69,19 @@ final class HealthKitService {
                 limit: limit,
                 sortDescriptors: [sortDescriptor]
             ) { _, samples, error in
-
+                
                 if let error {
-
+                    
                     continuation.resume(throwing: error)
                     return
-
+                    
                 }
-
+                
                 let workouts = samples as? [HKWorkout] ?? []
-
-                continuation.resume(returning: workouts)
-
+                
+                let events = workouts.map(makeWorkoutEvent)
+                
+                continuation.resume(returning: events)
             }
 
             self.healthStore.execute(query)
@@ -88,5 +89,19 @@ final class HealthKitService {
         }
 
     }
+
+}
+private func makeWorkoutEvent(from workout: HKWorkout) -> WorkoutEvent {
+
+    WorkoutEvent(
+        id: workout.uuid,
+        timestamp: workout.startDate,
+        activity: WorkoutActivityFormatter.title(
+            for: workout.workoutActivityType
+        ),
+        duration: workout.duration,
+        activeCalories: workout.totalEnergyBurned?
+            .doubleValue(for: .kilocalorie())
+    )
 
 }
