@@ -15,6 +15,7 @@ import SwiftUI
 struct MainTabView: View {
 
     let mealStore: MealStore
+    let historyStore: HistoryStore
 
     var body: some View {
 
@@ -39,7 +40,7 @@ struct MainTabView: View {
                 }
 
             HistoryView(
-                mealStore: mealStore
+                historyStore: historyStore
             )
                 .tabItem {
                     Label("History",
@@ -59,7 +60,10 @@ struct MainTabView: View {
 }
 
 #Preview {
+
     MainTabView(
-        mealStore: MealStore()
+        mealStore: MealStore(),
+        historyStore: HistoryStore()
     )
+
 }

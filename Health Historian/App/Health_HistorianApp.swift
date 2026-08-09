@@ -14,12 +14,16 @@ struct Health_HistorianApp: App {
     @State
     private var mealStore = MealStore()
 
+    @State
+    private var historyStore = HistoryStore()
+
     var body: some Scene {
 
         WindowGroup {
 
             MainTabView(
-                mealStore: mealStore
+                mealStore: mealStore,
+                historyStore: historyStore
             )
 
         }

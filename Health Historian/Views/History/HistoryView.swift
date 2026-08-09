@@ -10,7 +10,7 @@ import SwiftData
 
 struct HistoryView: View {
 
-    let mealStore: MealStore
+    let historyStore: HistoryStore
 
     @Environment(\.modelContext)
     private var modelContext
@@ -24,23 +24,25 @@ struct HistoryView: View {
 
             List {
 
-                ForEach(mealStore.mealsByDay, id: \.date) { day in
+                ForEach(historyStore.timeline) { event in
 
-                    Section(sectionTitle(for: day.date)) {
+                    switch event {
 
-                        ForEach(day.meals) { meal in
+                    case .meal(let meal):
 
-                            NavigationLink {
+                        NavigationLink {
 
-                                MealDetailView(meal: meal)
+                            MealDetailView(meal: meal)
 
-                            } label: {
+                        } label: {
 
-                                MealRow(meal: meal)
-
-                            }
+                            MealRow(meal: meal)
 
                         }
+
+                    case .workout(let workout):
+
+                        WorkoutRow(workout: workout)
 
                     }
 
@@ -67,9 +69,11 @@ struct HistoryView: View {
 
                 guard !hasLoaded else { return }
 
-                mealStore.load(from: modelContext)
-
                 hasLoaded = true
+
+                Task {
+
+                    await historyStore.reload(from: modelContext)
 
                 }
 
@@ -79,28 +83,12 @@ struct HistoryView: View {
 
     }
 
-    // MARK: - Helpers
-
-    private func sectionTitle(for date: Date) -> String {
-
-        let calendar = Calendar.current
-
-        if calendar.isDateInToday(date) {
-            return "Today"
-        }
-
-        if calendar.isDateInYesterday(date) {
-            return "Yesterday"
-        }
-
-        return date.formatted(.dateTime.month().day().year())
-
-    }
+}
 
 #Preview {
 
     HistoryView(
-        mealStore: MealStore()
+        historyStore: HistoryStore()
     )
 
 }
