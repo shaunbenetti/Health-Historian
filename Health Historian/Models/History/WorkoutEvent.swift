@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WorkoutEvent: HistoryEvent {
+struct WorkoutEvent: Identifiable {
 
     let id: UUID
 
